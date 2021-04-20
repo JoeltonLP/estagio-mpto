@@ -1,0 +1,7 @@
+@baseUTL = http://127.0.0.1:8000
+
+###
+
+# @name allStates
+
+GET  {{baseUTL}}/api/states
