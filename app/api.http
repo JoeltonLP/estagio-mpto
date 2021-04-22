@@ -10,6 +10,6 @@ POST {{baseURL}}/api/states
 Content-Type: application/json
 
 {
-    "name": "Acre",
-    "abbreviation": "AC"
+    "name": "Sao Pa",
+    "abbreviation": "SP"
 }
