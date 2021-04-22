@@ -1,0 +1,15 @@
+@baseURL = http://127.0.0.1:8000
+
+###
+# @name allStates
+GET {{baseURL}}/api/states
+
+###
+# @name createState
+POST {{baseURL}}/api/states
+Content-Type: application/json
+
+{
+    "name": "Acre",
+    "abbreviation": "AC"
+}
