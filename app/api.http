@@ -13,3 +13,7 @@ Content-Type: application/json
     "name": "Acre",
     "abbreviation": "AC"
 }
+
+###
+# @name getOne
+GET {{baseURL}}/api/states/2
