@@ -51,6 +51,27 @@ def state_create(request):
     return response
 
 
+def state_get_by_pk(request, pk):
+    status = 200
+    result  = {}
+
+    try:
+       result =  StateSerializer.serializer(
+            State.objects.get(id=pk)
+        )
+    except State.DoesNotExist:
+        status = 404
+        result = {
+            'Message': f'the  item with  pk {pk} not exists'
+        }
+       
+    return HttpResponse(
+        status=status,
+        content_type='application/json',
+        content=json.dumps(result)
+    )
+
+
 def state_index(request):
     response = None
     if request.method == 'GET':
@@ -58,3 +79,11 @@ def state_index(request):
     elif request.method == 'POST':
         response = state_create(request)
     return response
+
+
+def state_by_pk(request, pk):
+    if request.method == 'GET':
+
+        return state_get_by_pk(request, pk)
+    else:
+        return HttpResponse(status=501)

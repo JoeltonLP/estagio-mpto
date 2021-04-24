@@ -13,3 +13,10 @@ Content-Type: application/json
     "name": "Sao Pa",
     "abbreviation": "SP"
 }
+
+
+###
+# @name getone
+GET {{baseURL}}/api/states/1
+
+
