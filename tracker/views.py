@@ -72,6 +72,30 @@ def state_get_by_pk(request, pk):
     )
 
 
+def state_delete_by_pk(request, pk):
+    status = 200
+    result = {}
+    try:
+        State.objects.get(id=pk).delete()
+        result = {
+            'Message': f'a pk {pk} foi deletada com sucesso' 
+        }
+    except State.DoesNotExist:
+        status = 404
+        result = {
+           'Message': f'pk {pk} nao existe na base de dados'
+        }
+    except Exception as e:
+        result = {
+            'Message': str(e)
+        }
+    return HttpResponse(
+        status=status,
+        content_type='application/json',
+        content=json.dumps(result)
+    )
+
+
 def state_index(request):
     response = None
     if request.method == 'GET':
@@ -85,5 +109,7 @@ def state_by_pk(request, pk):
     if request.method == 'GET':
 
         return state_get_by_pk(request, pk)
+    elif request.method == 'DELETE':
+        return state_delete_by_pk(request, pk)
     else:
         return HttpResponse(status=501)
