@@ -10,8 +10,8 @@ POST {{baseURL}}/api/states
 Content-Type: application/json
 
 {
-    "name": "Acre",
-    "abbreviation": "AC"
+    "name": "Tocantins",
+    "abbreviation": "TO"
 }
 
 ###
@@ -19,5 +19,15 @@ Content-Type: application/json
 GET {{baseURL}}/api/states/2
 
 ###
-# @name DeleteOne
-DELETE {{baseURL}}/api/states/21
+# @name deleteOne
+DELETE {{baseURL}}/api/states/19
+
+###
+# @name updateOne
+PUT {{baseURL}}/api/states/22
+Content-Type: application/json
+
+{
+    "name": "Acre",
+    "abbreviation": "TO"
+}

@@ -53,10 +53,10 @@ def state_create(request):
 
 def state_get_by_pk(request, pk):
     status = 200
-    result  = {}
+    result = {}
 
     try:
-       result =  StateSerializer.serializer(
+        result = StateSerializer.serializer(
             State.objects.get(id=pk)
         )
     except State.DoesNotExist:
@@ -64,7 +64,7 @@ def state_get_by_pk(request, pk):
         result = {
             'Message': f'O item com a id igual a {pk} nao existe na base de dados'
         }
-       
+
     return HttpResponse(
         status=status,
         content_type='application/json',
@@ -77,13 +77,12 @@ def state_delete_by_pk(request, pk):
     result = {}
     try:
         State.objects.get(id=pk).delete()
-        result = {
-            'Message': f'a pk {pk} foi deletada com sucesso' 
-        }
+        status = 204
+        result = None
     except State.DoesNotExist:
         status = 404
         result = {
-           'Message': f'pk {pk} nao existe na base de dados'
+            'Message': f'pk {pk} nao existe na base de dados'
         }
     except Exception as e:
         result = {
@@ -92,7 +91,37 @@ def state_delete_by_pk(request, pk):
     return HttpResponse(
         status=status,
         content_type='application/json',
-        content=json.dumps(result)
+        content=json.dumps(result) if not result else None
+    )
+
+
+def state_update_by_pk(request, pk):
+    status = 200
+    result = {}
+    try:
+        with transaction.atomic():
+            state = State.objects.get(id=pk)
+            data = json.loads(request.body)
+
+            for key, value in data.items():
+                setattr(state, key, value)
+
+            state.save()
+            result = StateSerializer.serializer(state)
+    except State.DoesNotExist:
+        status = 404
+        result = {
+            'Message': f'pk {pk} nao existe na base de dados'
+        }
+    except Exception as e:
+        status = 400
+        result = {
+            'Message': str(e)
+        }
+    return HttpResponse(
+        status=status,
+        content_type='application/json',
+        content=json.dumps(result) if result else ''
     )
 
 
@@ -111,5 +140,7 @@ def state_by_pk(request, pk):
         return state_get_by_pk(request, pk)
     elif request.method == 'DELETE':
         return state_delete_by_pk(request, pk)
+    elif request.method == 'PUT':
+        return state_update_by_pk(request, pk)
     else:
         return HttpResponse(status=501)
