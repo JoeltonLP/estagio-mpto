@@ -17,3 +17,7 @@ Content-Type: application/json
 ###
 # @name getOne
 GET {{baseURL}}/api/states/2
+
+###
+# @name DeleteOne
+DELETE {{baseURL}}/api/states/21
