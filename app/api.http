@@ -10,17 +10,18 @@ POST {{baseURL}}/api/states
 Content-Type: application/json
 
 {
-    "name": "São Paulo",
-    "abbreviation": "SP"
+    "name": "Pará",
+    "abbreviation": "PA"
 }
 
 ###
-# @name getOne
-GET {{baseURL}}/api/states/2
+# @name getOneState
+GET {{baseURL}}/api/states/1
 
 ###
 # @name deleteOneState
-DELETE {{baseURL}}/api/states/19
+DELETE {{baseURL}}/api/states/6
+
 
 ###
 # @name updateOneState
