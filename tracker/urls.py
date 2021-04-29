@@ -13,5 +13,7 @@ urlpatterns = [
     path('states', state_index),
     path('states/<int:id>', state_by_id),
     path('cities', city_index),
-    path('cities/<int:id>', city_by_id)
+    path('cities/<int:id>', city_by_id),
+    
+    path('cities/<str:id>', city_by_id)
 ]

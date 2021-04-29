@@ -2,6 +2,7 @@ import json
 
 from django.http import HttpResponse
 from django.db import transaction
+from django.db.models import Q
 
 
 def make_rest(Serializer):
@@ -28,10 +29,38 @@ def make_rest(Serializer):
             content=json.dumps(result)
         )
 
+    def _do_filter(query, filters):
+        data = json.loads(filters)
+
+        stages = {}
+
+        for expression in data:
+            stage_number = expression.get('stage', 1)
+            stage = stages.get(stage_number, [])
+
+            stage.append(
+                Q(**{
+                    expression.get('property'): expression.get('value')
+                })
+            )
+
+            stages.update(
+                {stage_number: stage}
+            )
+        print(stages)
+
+        return query.filter()
+
     def _list(request):
         response = None
-
+        
         query = Model.objects.all()
+
+        query = _do_filter(
+            query,
+            request.GET.get('filters')
+        )
+        
         response = HttpResponse(status=501)
 
         if query.exists():
@@ -44,7 +73,6 @@ def make_rest(Serializer):
         else:
             response.status_code = 404
         return response
-
 
     def _create(request):
 
@@ -71,7 +99,6 @@ def make_rest(Serializer):
 
         return response
 
-
     def _update_by_id(request, id):
         status = 200
         result = {}
@@ -79,7 +106,7 @@ def make_rest(Serializer):
             with transaction.atomic():
                 instance = Model.objects.get(id=id)
                 data = json.loads(request.body)
-        
+
                 for key, value in data.items():
                     setattr(instance, key, value)
                 instance.save()
@@ -100,7 +127,6 @@ def make_rest(Serializer):
             content_type='application/json',
             content=json.dumps(result) if result else ''
         )
-
 
     def _delete_by_id(request, id):
         status = 200
@@ -125,8 +151,9 @@ def make_rest(Serializer):
             content_type='application/json',
             content=json.dumps(result) if not result else None
         )
+
     def _index(request):
-        
+
         response = None
 
         if request.method == 'GET':
@@ -136,16 +163,15 @@ def make_rest(Serializer):
             response = _create(request)
 
         return response
-    
+
     def _by_id(request, id):
         if request.method == 'GET':
-            return  _get_by_id(request, id)
-            #return state_get_by_pk(request, pk)
+            return _get_by_id(request, id)
+
         elif request.method == 'DELETE':
             return _delete_by_id(request, id)
-            #return state_delete_by_pk(request, pk)
+
         elif request.method == 'PUT':
             return _update_by_id(request, id)
-            #return state_update_by_pk(request, pk)
 
     return _index, _by_id

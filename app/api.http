@@ -35,7 +35,7 @@ Content-Type: application/json
 
 ###
 # @name allCities
-GET {{baseURL}}/api/cities
+GET {{baseURL}}/api/cities?filters=[{"property": "state__id", "value": 5, "stage": 2}]
 
 ###
 # @name createCity
@@ -63,6 +63,8 @@ Content-Type: application/json
 ###
 # @name deleteOneCity
 DELETE {{baseURL}}/api/cities/1
+
+
 
 
 
