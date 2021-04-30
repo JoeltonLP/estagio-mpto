@@ -1,1 +1,3 @@
-[{"property": "state__id", "value": 5, "stage": 1}]
+[{"property": "state__id", "value": 5, "stage": 1},{"property": "state__id", "value": 2, "stage": 1}]
+
+[{"property": "name__icontins", "value": "flor","stage": 1}

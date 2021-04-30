@@ -29,8 +29,8 @@ def make_rest(Serializer):
             content=json.dumps(result)
         )
 
-    def _do_filter(query, filters):
-        data = json.loads(filters)
+    def _do_filter(base_query, filters):
+        data = json.loads(filters) if filters else []
 
         stages = {}
 
@@ -38,40 +38,71 @@ def make_rest(Serializer):
             stage_number = expression.get('stage', 1)
             stage = stages.get(stage_number, [])
 
-            stage.append(
-                Q(**{
-                    expression.get('property'): expression.get('value')
-                })
-            )
+            if stage_number >= 0:
+                stage.append(
+                    Q(**{
+                        expression.get('property'): expression.get('value')
+                    })
+                )
+            else:
+                stage.append(
+                    ~Q(**{
+                        expression.get('property'): expression.get('value')
+                    })
+                )
+            
 
-            stages.update(
-                {stage_number: stage}
-            )
-        print(stages)
+            stages.update({
+                stage_number: stage
+            })
+            
+        query = None
+        for stage_number in stages.keys():
+            expressions = stages.get(stage_number)
+            sub_query = None
 
-        return query.filter()
+            for expression in expressions:
+                if not sub_query:
+                    sub_query = expression
+                else:
+                    sub_query |= expression
+
+            if not query:
+                query = sub_query
+            else:
+                query &= sub_query
+        return base_query.filter(query) if query else base_query
+    
 
     def _list(request):
-        response = None
-        
         query = Model.objects.all()
+        response = HttpResponse()
+        response.status_code = 501
 
-        query = _do_filter(
-            query,
-            request.GET.get('filters')
-        )
-        
-        response = HttpResponse(status=501)
-
-        if query.exists():
-            response = HttpResponse(
-                content_type='application/json',
-                content=json.dumps([
-                    Serializer.serializer(state) for state in query
-                ])
+        try:
+            query = _do_filter(
+                query,
+                request.GET.get('filters')
             )
-        else:
-            response.status_code = 404
+
+            if query.exists():
+                response = HttpResponse(
+                    content_type='application/json',
+                    content=json.dumps([
+                        Serializer.serializer(state) for state in query
+                    ])
+                )
+            else:
+                response.status_code = 404
+        except Exception as e:
+            response = HttpResponse(
+                status=400,
+                content_type='application/json',
+                content=json.dumps({
+                    'message': str(e)
+                }) 
+            )
+            
         return response
 
     def _create(request):
