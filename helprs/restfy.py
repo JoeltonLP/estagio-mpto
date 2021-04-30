@@ -2,6 +2,7 @@ import json
 
 from django.http import HttpResponse
 from django.db import transaction
+from django.db.models import Q
 
 
 def make_rest(Serializer):
@@ -13,7 +14,7 @@ def make_rest(Serializer):
         result = {}
 
         try:
-            result = Serializer.serializer(
+            result = Serializer.encode(
                 Model.objects.get(id=id)
             )
         except Model.DoesNotExist:
@@ -28,23 +29,81 @@ def make_rest(Serializer):
             content=json.dumps(result)
         )
 
+    def _do_filter(base_query, filters):
+        data = json.loads(filters) if filters else []
+
+        stages = {}
+
+        for expression in data:
+            stage_number = expression.get('stage', 1)
+            stage = stages.get(stage_number, [])
+
+            if stage_number >= 0:
+                stage.append(
+                    Q(**{
+                        expression.get('property'): expression.get('value')
+                    })
+                )
+            else:
+                stage.append(
+                    ~Q(**{
+                        expression.get('property'): expression.get('value')
+                    })
+                )
+            
+
+            stages.update({
+                stage_number: stage
+            })
+            
+        query = None
+        for stage_number in stages.keys():
+            expressions = stages.get(stage_number)
+            sub_query = None
+
+            for expression in expressions:
+                if not sub_query:
+                    sub_query = expression
+                else:
+                    sub_query |= expression
+
+            if not query:
+                query = sub_query
+            else:
+                query &= sub_query
+        return base_query.filter(query) if query else base_query
+    
+
     def _list(request):
-        response = None
-
         query = Model.objects.all()
-        response = HttpResponse(status=501)
+        response = HttpResponse()
+        response.status_code = 501
 
-        if query.exists():
-            response = HttpResponse(
-                content_type='application/json',
-                content=json.dumps([
-                    Serializer.serializer(state) for state in query
-                ])
+        try:
+            query = _do_filter(
+                query,
+                request.GET.get('filters')
             )
-        else:
-            response.status_code = 404
-        return response
 
+            if query.exists():
+                response = HttpResponse(
+                    content_type='application/json',
+                    content=json.dumps([
+                        Serializer.encode(state) for state in query
+                    ])
+                )
+            else:
+                response.status_code = 404
+        except Exception as e:
+            response = HttpResponse(
+                status=400,
+                content_type='application/json',
+                content=json.dumps({
+                    'message': str(e)
+                }) 
+            )
+            
+        return response
 
     def _create(request):
 
@@ -52,12 +111,12 @@ def make_rest(Serializer):
             with transaction.atomic():
 
                 data = json.loads(request.body)
-                instance = Serializer.deserializer(data)
+                instance = Serializer.decode(data)
                 instance.save()
 
                 response = HttpResponse(
                     content=json.dumps(
-                        Serializer.serializer(instance)
+                        Serializer.encode(instance)
                     ),
                     status=201
                 )
@@ -71,7 +130,6 @@ def make_rest(Serializer):
 
         return response
 
-
     def _update_by_id(request, id):
         status = 200
         result = {}
@@ -79,12 +137,12 @@ def make_rest(Serializer):
             with transaction.atomic():
                 instance = Model.objects.get(id=id)
                 data = json.loads(request.body)
-        
+
                 for key, value in data.items():
                     setattr(instance, key, value)
                 instance.save()
 
-                result = Serializer.serializer(instance)
+                result = Serializer.encode(instance)
         except Model.DoesNotExist:
             status = 404
             result = {
@@ -100,7 +158,6 @@ def make_rest(Serializer):
             content_type='application/json',
             content=json.dumps(result) if result else ''
         )
-
 
     def _delete_by_id(request, id):
         status = 200
@@ -125,8 +182,9 @@ def make_rest(Serializer):
             content_type='application/json',
             content=json.dumps(result) if not result else None
         )
+
     def _index(request):
-        
+
         response = None
 
         if request.method == 'GET':
@@ -136,16 +194,15 @@ def make_rest(Serializer):
             response = _create(request)
 
         return response
-    
+
     def _by_id(request, id):
         if request.method == 'GET':
-            return  _get_by_id(request, id)
-            #return state_get_by_pk(request, pk)
+            return _get_by_id(request, id)
+
         elif request.method == 'DELETE':
             return _delete_by_id(request, id)
-            #return state_delete_by_pk(request, pk)
+
         elif request.method == 'PUT':
             return _update_by_id(request, id)
-            #return state_update_by_pk(request, pk)
 
     return _index, _by_id

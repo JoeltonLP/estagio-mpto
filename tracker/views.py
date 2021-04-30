@@ -1,7 +1,7 @@
 
 from helprs import restfy
 
-from .serialization import (
+from .serializers import (
     StateSerializer, 
     CitySerializer
 )
