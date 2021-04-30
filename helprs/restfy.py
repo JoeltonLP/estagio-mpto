@@ -183,6 +183,7 @@ def make_rest(Serializer):
             content=json.dumps(result) if not result else None
         )
 
+
     def _index(request):
 
         response = None

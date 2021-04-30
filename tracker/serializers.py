@@ -1,5 +1,11 @@
-from .models import State, City
+from .models import State, City, Person, NaturalPerson, LegalPerson
 from helprs.serializer import BaseSerializer
+
+class PersonSerializer(BaseSerializer):
+    _model = Person
+
+class NaturalPersonSerializer(PersonSerializer):
+    _model = NaturalPerson
 
 class StateSerializer(BaseSerializer):
     # tracker.models.State
@@ -32,3 +38,6 @@ class CitySerializer(BaseSerializer):
         )
 
         return result
+
+
+
