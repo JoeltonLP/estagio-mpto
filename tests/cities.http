@@ -1,0 +1,38 @@
+@baseURL = http://127.0.0.1:8000
+
+###
+# @name allCities
+GET {{baseURL}}/api/cities
+
+
+###
+# @name createCity
+POST {{baseURL}}/api/cities
+Content-Type: application/json
+
+{
+    "name": "Belém",
+    "state_id": 5
+}
+
+###
+# @name getOneCity
+GET {{baseURL}}/api/cities/21
+
+###
+# @name updateOneCity
+PUT {{baseURL}}/api/cities/
+Content-Type: application/json
+
+{
+    "name": "Palmas"
+}
+
+###
+# @name deleteOneCity
+DELETE {{baseURL}}/api/cities/21
+
+
+
+
+
