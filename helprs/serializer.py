@@ -11,7 +11,7 @@ class BaseSerializer:
     def encode(cls, instance):
         return {
             'pk': instance.pk,
-            'description': str(instance)
+            'description': str(instance),
         }
 
     @classmethod

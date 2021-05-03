@@ -1,6 +1,6 @@
 from helprs.serializer import BaseSerializer
 from .models import (
-    State, 
+    State,
     City, 
     Person, 
     NaturalPerson, 
@@ -10,6 +10,18 @@ from .models import (
 
 class PersonSerializer(BaseSerializer):
     _model = Person
+
+    @classmethod
+    def encode(cls, instance):
+       
+        result = super().encode(instance)
+
+        result.update(
+            name=instance.name,
+            city=CitySerializer.encode(instance.city)
+        )
+
+        return result
 
 
 class NaturalPersonSerializer(PersonSerializer):
@@ -30,7 +42,7 @@ class LegalPersonSerializer(PersonSerializer):
 
     @classmethod
     def encode(cls, instance):
-        print('instance--', instance)
+       
         result = super().encode(instance)
 
         result.update(

@@ -21,7 +21,7 @@ class City(models.Model):
 class Person(models.Model):
     name = models.CharField('Nome', max_length=200)
     city = models.ForeignKey(City, related_name='+', on_delete=models.PROTECT)
-
+    
     def __str__(self):
         return self.name
 

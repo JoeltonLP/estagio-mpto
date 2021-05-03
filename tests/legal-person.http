@@ -13,10 +13,10 @@ POST {{baseURL}}/api/{{resource}}
 Content-Type: application/json
 
 {
-    "name": "Mario Augusto Pereira",
-    "city_id": 2,
-    "fantasy_name": "Tech-Cell",
-    "cnpj": "52930483748"
+    "name": "Rei julian",
+    "city_id": 1,
+    "fantasy_name": "Madagascar",
+    "cnpj": "34564564563"
 }
 
 ###
