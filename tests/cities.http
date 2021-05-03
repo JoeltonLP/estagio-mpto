@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ###
 # @name getOneCity
-GET {{baseURL}}/api/cities/21
+GET {{baseURL}}/api/cities/1
 
 ###
 # @name updateOneCity

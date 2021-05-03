@@ -1,39 +1,40 @@
 @baseURL = http://127.0.0.1:8000
 
-@resource = natural-persons
+@resource = persons
 
 ###
-# @name allPersons
+# @name allPerson
 GET {{baseURL}}/api/{{resource}}
 
 
 ###
-# @name createPersons
+# @name createPerson
 POST {{baseURL}}/api/{{resource}}
 Content-Type: application/json
 
 {
     "name": "Maiana Silva costa",
-    "cpf": "34563456453",
     "city_id": 1
 }
 
 ###
 # @name getOne
-GET {{baseURL}}/api/cities/21
+GET {{baseURL}}/api/{{resource}}/1
 
 ###
 # @name updateOne
-PUT {{baseURL}}/api/cities/
+PUT {{baseURL}}/api/{{resource}}/1
 Content-Type: application/json
 
 {
-    "name": "Palmas"
+   "cpf": "23445678543" 
 }
 
 ###
 # @name deleteOne
-DELETE {{baseURL}}/api/cities/21
+DELETE {{baseURL}}/api/{{resource}}/1
+
+
 
 
 
