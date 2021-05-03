@@ -110,22 +110,23 @@ def make_rest(Serializer):
             with transaction.atomic():
 
                 data = json.loads(request.body)
-                print('--', data)
                 instance = Serializer.decode(data)
                 instance.save()
 
                 response = HttpResponse(
+                    status=201,
+                    content_type='application/json',
                     content=json.dumps(
                         Serializer.encode(instance)
                     ),
-                    status=201
                 )
         except Exception as e:
             response = HttpResponse(
+                status=400,
+                content_type='application/json',
                 content=json.dumps({
                     'message': str(e)
-                }),
-                status=400
+                }),  
             )
 
         return response

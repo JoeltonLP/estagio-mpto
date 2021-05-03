@@ -8,33 +8,33 @@ GET {{baseURL}}/api/{{resource}}
 
 
 ###
-# @name createPersons
+# @name create
 POST {{baseURL}}/api/{{resource}}
 Content-Type: application/json
 
 {
-    "name": "Junior Alves Santos MEI",
+    "name": "Mario Augusto Pereira",
     "city_id": 2,
-    "fantasy_name": "Moto Jiro",
-    "cnpj": "03849374859"
+    "fantasy_name": "Tech-Cell",
+    "cnpj": "52930483748"
 }
 
 ###
-# @name getOneCity
-GET {{baseURL}}/api/{{resource}}/7
+# @name getOne
+GET {{baseURL}}/api/{{resource}}/9
 
 ###
-# @name updateOneCity
-PUT {{baseURL}}/api/{{resource}}
+# @name updateOne
+PUT {{baseURL}}/api/{{resource}}/9
 Content-Type: application/json
 
 {
-    "name": "Palmas"
+    "cnpj": "18737403849"
 }
 
 ###
-# @name deleteOneCity
-DELETE {{baseURL}}/api/{{resource}}/5
+# @name deleteOne
+DELETE {{baseURL}}/api/{{resource}}/9
 
 
 
