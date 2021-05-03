@@ -34,7 +34,7 @@ class NaturalPerson(Person):
 
 
 class LegalPerson(Person):
-    fantasy_name = models.CharField('Fantasy Name', max_length=200)
+    fantasy_name = models.CharField('fantasy_name', max_length=200)
     cnpj = models.CharField('cnpj', max_length=11, unique=True)
 
     def __str__(self):
