@@ -1,6 +1,6 @@
 @baseURL = http://127.0.0.1:8000
 
-@resource = natural-persons
+@resource = legal-persons
 
 ###
 # @name allPersons
@@ -13,18 +13,19 @@ POST {{baseURL}}/api/{{resource}}
 Content-Type: application/json
 
 {
-    "name": "Fernado Sousa Silva",
-    "cpf": "45784234569",
-    "city_id": 2
+    "name": "Junior Alves Santos MEI",
+    "city_id": 2,
+    "fantasy_name": "Moto Jiro",
+    "cnpj": "03849374859"
 }
 
 ###
 # @name getOneCity
-GET {{baseURL}}/api/cities/21
+GET {{baseURL}}/api/{{resource}}/7
 
 ###
 # @name updateOneCity
-PUT {{baseURL}}/api/cities/
+PUT {{baseURL}}/api/{{resource}}
 Content-Type: application/json
 
 {
@@ -33,7 +34,7 @@ Content-Type: application/json
 
 ###
 # @name deleteOneCity
-DELETE {{baseURL}}/api/cities/21
+DELETE {{baseURL}}/api/{{resource}}/5
 
 
 

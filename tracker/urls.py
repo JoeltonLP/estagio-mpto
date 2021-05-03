@@ -8,7 +8,9 @@ from .views import (
     city_index,
     city_by_id,
     natural_person_index,
-    natural_person_by_id
+    natural_person_by_id,
+    legal_person_index,
+    legal_person_by_id
 )
 
 urlpatterns = [
@@ -17,5 +19,7 @@ urlpatterns = [
     path('cities', city_index),
     path('cities/<int:id>', city_by_id),
     path('natural-persons', natural_person_index),
-    path('natural-persons/<int:id>', natural_person_by_id)
+    path('natural-persons/<int:id>', natural_person_by_id),
+    path('legal-persons', legal_person_index),
+    path('legal-persons/<int:id>', legal_person_by_id)
 ]

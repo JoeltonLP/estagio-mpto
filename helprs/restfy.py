@@ -106,11 +106,11 @@ def make_rest(Serializer):
         return response
 
     def _create(request):
-
         try:
             with transaction.atomic():
 
                 data = json.loads(request.body)
+                print('--', data)
                 instance = Serializer.decode(data)
                 instance.save()
 
@@ -180,7 +180,7 @@ def make_rest(Serializer):
         return HttpResponse(
             status=status,
             content_type='application/json',
-            content=json.dumps(result) if not result else None
+            content=json.dumps(result) if  result else ''
         )
 
 
