@@ -39,3 +39,25 @@ class LegalPerson(Person):
 
     def __str__(self):
         return f'{self.fantasy_name} ({self.cnpj})'
+
+
+class PackageContainer(models.Model):
+    pass
+
+
+class LogTrace(models.Model):
+    package_container = models.ForeignKey(
+        PackageContainer, 
+        related_name='logs', 
+        on_delete=PackageContainer
+    )
+
+    city = models.ForeignKey(
+        City, 
+        related_name='+',
+        on_delete=City
+    )
+
+    when = models.DateTimeField(auto_now_add=True)
+
+
