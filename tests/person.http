@@ -13,7 +13,7 @@ POST {{baseURL}}/api/{{resource}}
 Content-Type: application/json
 
 {
-    "name": "Maiana Silva costa",
+    "name": "Mas",
     "city_id": 1
 }
 

@@ -20,11 +20,11 @@ Content-Type: application/json
 
 ###
 # @name getOne
-GET {{baseURL}}/api/cities/21
+GET {{baseURL}}/api/{{resource}}/21
 
 ###
 # @name updateOne
-PUT {{baseURL}}/api/cities/
+PUT {{baseURL}}/api/{{resource}}/
 Content-Type: application/json
 
 {
