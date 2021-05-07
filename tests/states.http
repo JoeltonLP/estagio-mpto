@@ -10,8 +10,8 @@ POST {{baseURL}}/api/states
 Content-Type: application/json
 
 {
-    "name": "Pernabuco",
-    "abbreviation": "PE"
+    "name": "Tocantins",
+    "abbreviation": "TO"
 }
 
 ###
@@ -29,8 +29,8 @@ PUT {{baseURL}}/api/states/9
 Content-Type: application/json
 
 {
-    "name": "Maranhão",
-    "abbreviation": "MA"
+    "name": "São Paulo",
+    "abbreviation": "SP"
 }
 
 

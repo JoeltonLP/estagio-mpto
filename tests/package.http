@@ -1,0 +1,51 @@
+@baseURL = http://127.0.0.1:8000
+
+@resource = packages
+
+###
+# @name allPersons
+GET {{baseURL}}/api/{{resource}}
+
+
+###
+# @name create
+POST {{baseURL}}/api/{{resource}}
+Content-Type: application/json
+
+{
+    "sender_id": 1,
+    "destination_id": 2,
+    "weight": 1.5,
+    "volume": 5
+}
+
+###
+# @name getOne
+GET {{baseURL}}/api/{{resource}}/1
+
+###
+# @name update
+PUT {{baseURL}}/api/{{resource}}/3
+Content-Type: application/json
+
+{
+    "delivery_state": 1
+}
+
+###
+# @name deleteOne
+DELETE {{baseURL}}/api/{{resource}}/9
+
+###
+# @name registerLog
+POST {{baseURL}}/api/{{resource}}/955d28ae
+Content-Type: application/json
+
+{
+    "city": 1
+}
+
+
+
+
+

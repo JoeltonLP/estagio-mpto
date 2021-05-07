@@ -1,11 +1,36 @@
+
 from helprs.serializer import BaseSerializer
 from .models import (
     State,
     City, 
     Person, 
     NaturalPerson, 
-    LegalPerson
+    LegalPerson,
+    PackageContainer
 )
+
+class PackageContainerSerilizer(BaseSerializer):
+    _model = PackageContainer
+
+    @classmethod
+    def encode(cls, instance):
+
+        result = super().encode(instance)
+
+        result.update(
+            sender=PersonSerializer.encode(instance.sender),
+            destination=PersonSerializer.encode(instance.destination),
+            sender_city=CitySerializer.encode(instance.sender_city),
+            destination_city=CitySerializer.encode(instance.destination_city),
+            weight=float(instance.weight),
+            volume=float(instance.volume),
+            create_at=str(instance.create_at),
+            unique_identify=instance.unique_identify,
+            delivery_state=instance.delivery_state,
+            delivery_state_display=instance.get_delivery_state_display()
+        )
+
+        return result
 
 
 class PersonSerializer(BaseSerializer):
@@ -22,7 +47,6 @@ class PersonSerializer(BaseSerializer):
         )
 
         return result
-
 
 class NaturalPersonSerializer(PersonSerializer):
     _model = NaturalPerson

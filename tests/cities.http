@@ -11,8 +11,8 @@ POST {{baseURL}}/api/cities
 Content-Type: application/json
 
 {
-    "name": "Belém",
-    "state_id": 5
+    "name": "Araguina",
+    "state_id": 2
 }
 
 ###

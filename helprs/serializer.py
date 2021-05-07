@@ -5,7 +5,8 @@ class BaseSerializer:
 
     @classmethod
     def Model(cls):
-        return cls._model
+        print('--*', cls._model)
+        return cls._model 
 
     @classmethod
     def encode(cls, instance):

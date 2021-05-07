@@ -195,7 +195,7 @@ def make_rest(Serializer, allow_list=True, allow_get=True, allow_create=True,
             response = _list(request)
 
         elif allow_create and request.method == 'POST':
-            response = _create(request)
+            response = HttpResponse(status=501)#_create(request)
         else:
             permitted_methods = []
 
