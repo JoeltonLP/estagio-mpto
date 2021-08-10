@@ -6,7 +6,8 @@ from .models import (
     Person, 
     NaturalPerson, 
     LegalPerson,
-    PackageContainer
+    PackageContainer,
+    LogTrace
 )
 
 class PackageContainerSerilizer(BaseSerializer):
@@ -108,4 +109,5 @@ class CitySerializer(BaseSerializer):
         return result
 
 
-
+class LogTraceSerializer(BaseSerializer):
+    _model = LogTrace

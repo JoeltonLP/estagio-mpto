@@ -5,7 +5,6 @@ class BaseSerializer:
 
     @classmethod
     def Model(cls):
-        print('--*', cls._model)
         return cls._model 
 
     @classmethod

@@ -86,6 +86,9 @@ class PackageContainer(models.Model):
     #Preciso que ao cadastrar um novo package que este tenho um numero não sequencial e unico #35
 
     def _generate_unique_identify(self):
+
+        print('XX', self)
+
         return hashlib.new(
             'md5',
             base64.b64encode(

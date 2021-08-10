@@ -1,4 +1,4 @@
-@baseURL = http://127.0.0.1:8000
+@baseURL = http://127.0.0.1:9000
 
 @resource = packages
 
@@ -38,11 +38,11 @@ DELETE {{baseURL}}/api/{{resource}}/9
 
 ###
 # @name registerLog
-POST {{baseURL}}/api/{{resource}}/955d28ae
+POST {{baseURL}}/api/{{resource}}/e82776b6/log
 Content-Type: application/json
 
 {
-    "city": 1
+    "city": 2
 }
 
 
